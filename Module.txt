@@ -1,0 +1,13 @@
+﻿Name: Vote Up/Down
+AntiForgery: enabled
+Author: Nicholas Mayne
+Website: https://github.com/Jetski5822/Vote-Up-Down-Module
+Version: 0.0.1
+OrchardVersion: 1.2.41
+Description: Provides a Vote up or down functionality - Requires the Voting module to be installed.
+Features:
+    NGM.VoteUpDown:
+        Name: Vote up/down
+        Category: Voting and Rating
+        Description: A vote up/down module
+        Dependencies: Contrib.Voting, Orchard.jQuery
