@@ -24,7 +24,6 @@
         <button class="voteupdown down-submit" name="submit.DownVote" type="submit" value="false">Vote Down</button>
         @Html.Hidden("contentId", (int)Model.ContentItem.Id)
         @Html.Hidden("ReturnUrl", Context.Request.ToUrlString()) 
-            @*<input type=”image” src=”../Styles/images/down_arrow.png” alt=”submit” name=”submit” />*@
     }
 }
 </div>
