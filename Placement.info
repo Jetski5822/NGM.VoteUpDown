@@ -1,3 +1,8 @@
 ﻿<Placement>
-
+  <Place Parts_VoteUpDown="Meta:10"
+         Parts_VoteUpDown_SummaryAdmin="-"/>
+  <Match DisplayType="SummaryAdmin">
+    <Place Parts_VoteUpDown="-"
+           Parts_VoteUpDown_SummaryAdmin="Content:5"/>
+  </Match>
 </Placement>

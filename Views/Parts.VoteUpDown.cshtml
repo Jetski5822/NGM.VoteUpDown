@@ -1,0 +1,30 @@
+﻿@using Orchard.Utility.Extensions;
+@{
+    Style.Require("NGM.VoteUpDown");
+    Script.Require("NGM.VoteUpDown");
+
+    double roundedResult = Math.Round(Model.ResultValue * 2, MidpointRounding.AwayFromZero) / 2;
+    string currentResultClass = string.Format("updown-value-{0}", Math.Floor(roundedResult));
+
+    double userRating = Model.UserRating;
+    bool userCanRate = Request.IsAuthenticated || Model.AllowAnonymousRatings;
+    if (userCanRate && !Request.IsAuthenticated && Request.Cookies["Orchrd__updown"] != null && !string.IsNullOrWhiteSpace(Request.Cookies["Orchrd__updown"].Value)) {
+      userRating = Convert.ToDouble(Request.Cookies["Orchrd__updown"].Value);
+    }
+    string canRateClass = userCanRate ? "updown-can-rate" : "";
+    string userRatingClass = userCanRate && userRating > 0 ? string.Format("updown-user-rating-{0}", userRating) : "";
+}
+<div class="updown-rating @canRateClass">
+  @if (userCanRate) {
+    using (Html.BeginFormAntiForgeryPost(Url.Action("Apply", "Vote", new { area = "NGM.VoteUpDown" }), FormMethod.Post, new {@class = "rate"})) {  
+        <button class="voteupdown up-submit" name="submit.UpVote" type="submit" value="true">Vote Up</button>
+        <div class="updown-current-result @currentResultClass @userRatingClass">
+          <span class="vote-count">@Model.ResultValue</span>
+        </div>
+        <button class="voteupdown down-submit" name="submit.DownVote" type="submit" value="false">Vote Down</button>
+        @Html.Hidden("contentId", (int)Model.ContentItem.Id)
+        @Html.Hidden("ReturnUrl", Context.Request.ToUrlString()) 
+            @*<input type=”image” src=”../Styles/images/down_arrow.png” alt=”submit” name=”submit” />*@
+    }
+}
+</div>
