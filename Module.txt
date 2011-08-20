@@ -4,7 +4,7 @@ Author: Nicholas Mayne
 Website: https://github.com/Jetski5822/Vote-Up-Down-Module
 Version: 0.0.1
 OrchardVersion: 1.2.41
-Description: Provides a Vote up or down functionality - Requires the Voting module to be installed. - Thanks to Nathen Heskew for lettign me use the code from the Stars module.
+Description: Provides a Vote up or down functionality - Requires the Voting module to be installed. - Thanks to Nathen Heskew for letting me use the code from the Stars module.
 Features:
     NGM.VoteUpDown:
         Name: Vote up/down
