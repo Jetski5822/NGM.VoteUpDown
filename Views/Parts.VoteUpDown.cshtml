@@ -21,7 +21,7 @@
         <div class="updown-current-result @currentResultClass @userRatingClass">
           <span class="vote-count">@Model.ResultValue</span>
         </div>
-        <button class="voteupdown down-submit" name="submit.DownVote" type="submit" value="false">@("Vote Down")</button>
+        <button class="voteupdown down-submit" name="submit.DownVote" type="submit" value="false">@T("Vote Down")</button>
         @Html.Hidden("contentId", (int)Model.ContentItem.Id)
         @Html.Hidden("ReturnUrl", Context.Request.ToUrlString()) 
     }
