@@ -21,7 +21,7 @@
 	cursor: hand; /* IE 5.x */
 }
 form>.voteupdown { /* For non-IE browsers*/
-height: 0px;
+	height: 0px;
 }
 
 .updown-current-result {
@@ -31,4 +31,8 @@ height: 0px;
 
 .updown-rating {
 	width:30px;
+}
+
+.vote-count {
+	font-size: 20px;
 }
