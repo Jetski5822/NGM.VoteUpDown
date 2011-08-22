@@ -15,15 +15,13 @@
     string userRatingClass = userCanRate && userRating > 0 ? string.Format("updown-user-rating-{0}", userRating) : "";
 }
 <div class="updown-rating @canRateClass">
-  @if (userCanRate) {
-    using (Html.BeginFormAntiForgeryPost(Url.Action("Apply", "Vote", new { area = "NGM.VoteUpDown" }), FormMethod.Post, new {@class = "rate"})) {  
-        <button class="voteupdown up-submit" name="submit.UpVote" type="submit" value="true">@T("Vote Up")</button>
-        <div class="updown-current-result @currentResultClass @userRatingClass">
-          <span class="vote-count">@Model.ResultValue</span>
-        </div>
-        <button class="voteupdown down-submit" name="submit.DownVote" type="submit" value="false">@T("Vote Down")</button>
-        @Html.Hidden("contentId", (int)Model.ContentItem.Id)
-        @Html.Hidden("ReturnUrl", Context.Request.ToUrlString()) 
-    }
+  @using (Html.BeginFormAntiForgeryPost(Url.Action("Apply", "Vote", new { area = "NGM.VoteUpDown" }), FormMethod.Post, new {@class = "rate"})) {  
+      <button class="voteupdown up-submit" name="submit.UpVote" type="submit" value="true">@T("Vote Up")</button>
+      <div class="updown-current-result @currentResultClass @userRatingClass">
+        <span class="vote-count">@Model.ResultValue</span>
+      </div>
+      <button class="voteupdown down-submit" name="submit.DownVote" type="submit" value="false">@T("Vote Down")</button>
+      @Html.Hidden("contentId", (int)Model.ContentItem.Id)
+      @Html.Hidden("ReturnUrl", Context.Request.ToUrlString()) 
   }
 </div>
