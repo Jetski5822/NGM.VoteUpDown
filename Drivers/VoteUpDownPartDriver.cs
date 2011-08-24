@@ -33,7 +33,7 @@ namespace NGM.VoteUpDown.Drivers {
                         () => shapeHelper.Parts_VoteUpDown_UserSummary(displayPart)),
                 ContentShape(
                     "Parts_VoteUpDown_SummaryAdmin",
-                        () => shapeHelper.Parts_VoteUpDown_SummaryAdmin(displayPart)))
+                        () => shapeHelper.Parts_VoteUpDown_SummaryAdmin(displayPart))
                 );
         }
 
