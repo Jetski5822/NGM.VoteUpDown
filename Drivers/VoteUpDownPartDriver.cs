@@ -19,13 +19,21 @@ namespace NGM.VoteUpDown.Drivers {
             if (!part.ShowVoter)
                 return null;
 
+            var displayPart = BuildVoteUpDown(part);
+
             return Combined(
                 ContentShape(
                     "Parts_VoteUpDown",
-                        () => shapeHelper.Parts_VoteUpDown(BuildVoteUpDown(part))),
+                        () => shapeHelper.Parts_VoteUpDown(displayPart)),
+                ContentShape(
+                    "Parts_VoteUpDown_Summary",
+                        () => shapeHelper.Parts_VoteUpDown_Summary(displayPart)),
+                ContentShape(
+                    "Parts_VoteUpDown_UserSummary",
+                        () => shapeHelper.Parts_VoteUpDown_UserSummary(displayPart)),
                 ContentShape(
                     "Parts_VoteUpDown_SummaryAdmin",
-                        () => shapeHelper.Parts_VoteUpDown_SummaryAdmin(BuildVoteUpDown(part)))
+                        () => shapeHelper.Parts_VoteUpDown_SummaryAdmin(displayPart)))
                 );
         }
 
