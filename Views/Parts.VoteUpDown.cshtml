@@ -1,7 +1,6 @@
 ﻿@using Orchard.Utility.Extensions;
 @{
     Style.Require("NGM.VoteUpDown");
-    Script.Require("NGM.VoteUpDown");
 
     double roundedResult = Math.Round(Model.ResultValue * 2, MidpointRounding.AwayFromZero) / 2;
     string currentResultClass = string.Format("updown-value-{0}", Math.Floor(roundedResult));

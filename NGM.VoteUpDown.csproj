@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Controllers\VoteController.cs" />
     <Compile Include="Drivers\VoteUpDownPartDriver.cs" />
+    <Compile Include="Models\Constants.cs" />
     <Compile Include="Handlers\VoteUpDownPartHandler.cs" />
     <Compile Include="Settings\VoteUpDownTypePartSettings.cs" />
     <Compile Include="Models\VoteUpDownPart.cs" />
@@ -62,7 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Module.txt" />
-    <Content Include="Scripts\NGM.VoteUpDown.js" />
     <Content Include="Styles\images\down_arrow.png" />
     <Content Include="Styles\images\up_arrow.png" />
     <Content Include="Styles\NGM.VoteUpDown.css" />

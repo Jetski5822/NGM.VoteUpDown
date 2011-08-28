@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Contrib.Voting.Models;
 using Contrib.Voting.Services;
+using NGM.VoteUpDown.Handlers;
 using NGM.VoteUpDown.Models;
 using Orchard;
 using Orchard.ContentManagement.Drivers;
@@ -38,13 +39,13 @@ namespace NGM.VoteUpDown.Drivers {
         }
 
         private VoteUpDownPart BuildVoteUpDown(VoteUpDownPart part) {
-            part.ResultValue = (_votingService.GetResult(part.ContentItem.Id, "sum")
+            part.ResultValue = (_votingService.GetResult(part.ContentItem.Id, "sum", Constants.Dimension)
                 ?? new ResultRecord()).Value;
                     
             // get the user's vote
             var currentUser = _orchardServices.WorkContext.CurrentUser;
             if (currentUser != null) {
-                var userRating = _votingService.Get(vote => vote.Username == currentUser.UserName && vote.ContentItemRecord == part.ContentItem.Record).FirstOrDefault();
+                var userRating = _votingService.Get(vote => vote.Username == currentUser.UserName && vote.ContentItemRecord == part.ContentItem.Record && vote.Dimension == Constants.Dimension).FirstOrDefault();
                 part.UserRating = userRating != null ? userRating.Value : 0;
             }
 

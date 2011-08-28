@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Web.Mvc;
 using Contrib.Voting.Services;
+using NGM.VoteUpDown.Handlers;
 using NGM.VoteUpDown.Models;
 using Orchard;
 using Orchard.ContentManagement;
@@ -47,7 +48,7 @@ namespace NGM.VoteUpDown.Controllers {
             int rating = voteUp ? 1 : -1;
 
             if (currentUser != null) {
-                var currentVote = _votingService.Get(vote => vote.Username == currentUser.UserName && vote.ContentItemRecord == content.Record).FirstOrDefault();
+                var currentVote = _votingService.Get(vote => vote.Username == currentUser.UserName && vote.ContentItemRecord == content.Record && vote.Dimension == Constants.Dimension).FirstOrDefault();
 
                 if (currentVote != null && (currentVote.Value + rating == 0)) {
                     _votingService.RemoveVote(currentVote);
@@ -56,7 +57,7 @@ namespace NGM.VoteUpDown.Controllers {
                     if (currentVote != null)
                         _votingService.ChangeVote(currentVote, rating);
                     else
-                        _votingService.Vote(content, currentUser.UserName, HttpContext.Request.UserHostAddress, rating);
+                        _votingService.Vote(content, currentUser.UserName, HttpContext.Request.UserHostAddress, rating, Constants.Dimension);
                 }
             }
             else {
@@ -64,9 +65,9 @@ namespace NGM.VoteUpDown.Controllers {
                 if (!string.IsNullOrWhiteSpace(HttpContext.Request.Headers["X-Forwarded-For"]))
                     anonHostname += "-" + HttpContext.Request.Headers["X-Forwarded-For"];
 
-                var currentVote = _votingService.Get(vote => vote.Username == "Anonymous" && vote.Hostname == anonHostname && vote.ContentItemRecord == content.Record).FirstOrDefault();
+                var currentVote = _votingService.Get(vote => vote.Username == "Anonymous" && vote.Hostname == anonHostname && vote.ContentItemRecord == content.Record && vote.Dimension == Constants.Dimension).FirstOrDefault();
                 if (rating > 0 && currentVote == null)
-                    _votingService.Vote(content, "Anonymous", anonHostname, rating);
+                    _votingService.Vote(content, "Anonymous", anonHostname, rating, Constants.Dimension);
             }
 
             return this.RedirectLocal(returnUrl, "~/");
