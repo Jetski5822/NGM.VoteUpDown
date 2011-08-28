@@ -1,11 +1,11 @@
 ﻿<Placement>
-  <Place Parts_VoteUpDown="Meta:10"
-         Parts_VoteUpDown_SummaryAdmin="-"/>
+  <Match DisplayType="Detail">
+    <Place Parts_VoteUpDown="Meta:10"/>
+  </Match>
   <Match DisplayType="Summary">
     <Place Parts_VoteUpDown_Summary="Content:before.1" />
   </Match>
   <Match DisplayType="SummaryAdmin">
-    <Place Parts_VoteUpDown="-"
-           Parts_VoteUpDown_SummaryAdmin="Content:5"/>
+    <Place Parts_VoteUpDown_SummaryAdmin="Content:5"/>
   </Match>
 </Placement>
