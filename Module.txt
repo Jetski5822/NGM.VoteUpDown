@@ -2,8 +2,8 @@
 AntiForgery: enabled
 Author: Nicholas Mayne
 Website: https://github.com/Jetski5822/Vote-Up-Down-Module
-Version: 1.5
-OrchardVersion: 1.2.41
+Version: 2.0
+OrchardVersion: 1.7.0
 Description: Provides a Vote up or down functionality - Requires the Voting module to be installed. - Thanks to Nathen Heskew for letting me use the code from the Stars module. To enable up/down voting on any content type add the VoteUpDown part to the content type via the Content Types management page in the admin (~/Admin/ContentTypes).
 Features:
     NGM.VoteUpDown:
