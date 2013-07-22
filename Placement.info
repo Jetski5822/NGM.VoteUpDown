@@ -3,7 +3,7 @@
     <Place Parts_VoteUpDown="Meta:10"/>
   </Match>
   <Match DisplayType="Summary">
-    <Place Parts_VoteUpDown_Summary="Content:before.1" />
+    <Place Parts_VoteUpDown_Summary="Meta:10" />
   </Match>
   <Match DisplayType="SummaryAdmin">
     <Place Parts_VoteUpDown_SummaryAdmin="Content:5"/>

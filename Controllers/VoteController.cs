@@ -1,24 +1,25 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Web.Mvc;
-using Contrib.Voting.Services;
-using NGM.VoteUpDown.Handlers;
 using NGM.VoteUpDown.Models;
-using Orchard;
+using NGM.VoteUpDown.Services;
 using Orchard.ContentManagement;
 using Orchard.Localization;
 using Orchard.Mvc.Extensions;
+using Orchard.Security;
 
 namespace NGM.VoteUpDown.Controllers {
     public class VoteController  : Controller {
-        private readonly IOrchardServices _orchardServices;
         private readonly IContentManager _contentManager;
-        private readonly IVotingService _votingService;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IInternalVotingService _internalVotingService;
 
-        public VoteController(IOrchardServices orchardServices, IContentManager contentManager, IVotingService votingService) {
-            _orchardServices = orchardServices;
+        public VoteController(
+            IContentManager contentManager, 
+            IAuthenticationService authenticationService, 
+            IInternalVotingService internalVotingService) {
             _contentManager = contentManager;
-            _votingService = votingService;
+            _authenticationService = authenticationService;
+            _internalVotingService = internalVotingService;
             T = NullLocalizer.Instance;
         }
 
@@ -41,33 +42,20 @@ namespace NGM.VoteUpDown.Controllers {
             if (content == null || !content.Has<VoteUpDownPart>() || !content.As<VoteUpDownPart>().ShowVoter)
                 return this.RedirectLocal(returnUrl, "~/");
 
-            var currentUser = _orchardServices.WorkContext.CurrentUser;
+            var currentUser = _authenticationService.GetAuthenticatedUser();
             if ((currentUser == null && !content.As<VoteUpDownPart>().AllowAnonymousRatings))
                 return this.RedirectLocal(returnUrl, "~/");
 
             int rating = voteUp ? 1 : -1;
 
             if (currentUser != null) {
-                var currentVote = _votingService.Get(vote => vote.Username == currentUser.UserName && vote.ContentItemRecord == content.Record && vote.Dimension == Constants.Dimension).FirstOrDefault();
-
-                if (currentVote != null && (currentVote.Value + rating == 0)) {
-                    _votingService.RemoveVote(currentVote);
-                }
-                else {
-                    if (currentVote != null)
-                        _votingService.ChangeVote(currentVote, rating);
-                    else
-                        _votingService.Vote(content, currentUser.UserName, HttpContext.Request.UserHostAddress, rating, Constants.Dimension);
-                }
+                _internalVotingService.RegisterUserVote(currentUser, content, rating);
             }
             else {
-                var anonHostname = HttpContext.Request.UserHostAddress;
-                if (!string.IsNullOrWhiteSpace(HttpContext.Request.Headers["X-Forwarded-For"]))
-                    anonHostname += "-" + HttpContext.Request.Headers["X-Forwarded-For"];
+                var currentVote = _internalVotingService.GetAnonUserVote(content);
 
-                var currentVote = _votingService.Get(vote => vote.Username == "Anonymous" && vote.Hostname == anonHostname && vote.ContentItemRecord == content.Record && vote.Dimension == Constants.Dimension).FirstOrDefault();
                 if (rating > 0 && currentVote == null)
-                    _votingService.Vote(content, "Anonymous", anonHostname, rating, Constants.Dimension);
+                    _internalVotingService.RegisterAnonVote(content, rating);
             }
 
             return this.RedirectLocal(returnUrl, "~/");

@@ -1,19 +1,19 @@
-﻿using System.Linq;
-using Contrib.Voting.Models;
-using Contrib.Voting.Services;
-using NGM.VoteUpDown.Handlers;
+﻿using Contrib.Voting.Models;
+using NGM.VoteUpDown.Extensions;
 using NGM.VoteUpDown.Models;
+using NGM.VoteUpDown.Services;
 using Orchard;
 using Orchard.ContentManagement.Drivers;
+using Orchard.Security;
 
 namespace NGM.VoteUpDown.Drivers {
     public class VoteUpDownPartDriver : ContentPartDriver<VoteUpDownPart> {
-        private readonly IOrchardServices _orchardServices;
-        private readonly IVotingService _votingService;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IInternalVotingService _internalVotingService;
 
-        public VoteUpDownPartDriver(IOrchardServices orchardServices, IVotingService votingService) {
-            _orchardServices = orchardServices;
-            _votingService = votingService;
+        public VoteUpDownPartDriver(IAuthenticationService authenticationService, IInternalVotingService internalVotingService) {
+            _authenticationService = authenticationService;
+            _internalVotingService = internalVotingService;
         }
 
         protected override DriverResult Display(VoteUpDownPart part, string displayType, dynamic shapeHelper) {
@@ -39,14 +39,14 @@ namespace NGM.VoteUpDown.Drivers {
         }
 
         private VoteUpDownPart BuildVoteUpDown(VoteUpDownPart part) {
-            part.ResultValue = (_votingService.GetResult(part.ContentItem.Id, "sum", Constants.Dimension)
-                ?? new ResultRecord()).Value;
+            part.ResultValue =
+                _internalVotingService.GetResult(part.ContentItem);
                     
             // get the user's vote
-            var currentUser = _orchardServices.WorkContext.CurrentUser;
+            var currentUser = _authenticationService.GetAuthenticatedUser();
             if (currentUser != null) {
-                var userRating = _votingService.Get(vote => vote.Username == currentUser.UserName && vote.ContentItemRecord == part.ContentItem.Record && vote.Dimension == Constants.Dimension).FirstOrDefault();
-                part.UserRating = userRating != null ? userRating.Value : 0;
+                var rating = _internalVotingService.GetUserVote(currentUser, part.ContentItem);
+                part.UserRating = rating != null ? rating.Value : 0;
             }
 
             return part;
