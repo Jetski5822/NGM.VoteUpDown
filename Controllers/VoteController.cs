@@ -1,8 +1,8 @@
-﻿using System.Reflection;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using NGM.VoteUpDown.Models;
 using NGM.VoteUpDown.Services;
 using Orchard.ContentManagement;
+using Orchard.Core.Contents.Controllers;
 using Orchard.Localization;
 using Orchard.Mvc.Extensions;
 using Orchard.Security;
@@ -59,19 +59,6 @@ namespace NGM.VoteUpDown.Controllers {
             }
 
             return this.RedirectLocal(returnUrl, "~/");
-        }
-    }
-
-    public class FormValueRequiredAttribute : ActionMethodSelectorAttribute {
-        private readonly string _submitButtonName;
-
-        public FormValueRequiredAttribute(string submitButtonName) {
-            _submitButtonName = submitButtonName;
-        }
-
-        public override bool IsValidForRequest(ControllerContext controllerContext, MethodInfo methodInfo) {
-            var value = controllerContext.HttpContext.Request.Form[_submitButtonName];
-            return !string.IsNullOrEmpty(value);
         }
     }
 }
